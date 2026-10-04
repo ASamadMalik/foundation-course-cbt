@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sindh Science Coaching Academy — Foundation Course Test</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
+header{background:#123b66;color:#fff;text-align:center;padding:18px 12px;position:sticky;top:0;z-index:5}
+header h1{margin:0 0 5px;font-size:21px}header p{margin:0;font-size:14px}
+.container{max-width:900px;margin:18px auto;padding:0 12px}.panel{background:#fff;border-radius:14px;padding:18px;box-shadow:0 3px 14px #0001;margin-bottom:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap}.field{flex:1;min-width:220px}label{font-weight:bold;display:block;margin-bottom:7px}
+input[type=text]{width:100%;padding:12px;border:1px solid #cbd3df;border-radius:9px;font-size:16px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{flex:1;min-width:140px;text-align:center;background:#f6f8fb;border-radius:10px;padding:10px}
+.stat b{display:block;font-size:20px;margin-top:3px}.question{font-size:19px;font-weight:bold;line-height:1.5;margin-bottom:14px}
+.option{display:block;border:1px solid #d5dce6;border-radius:10px;padding:13px;margin:9px 0;cursor:pointer}
+.option:hover{background:#f6f8fb}.option input{margin-right:8px}
+button{border:0;border-radius:9px;padding:11px 17px;font-size:15px;font-weight:bold;cursor:pointer}
+.primary{background:#123b66;color:#fff}.secondary{background:#e8edf4;color:#172033}.danger{background:#b42318;color:#fff}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:7px;margin-top:10px}
+.qbtn{padding:9px 0;background:#e8edf4}.qbtn.done{background:#123b66;color:#fff}
+.hidden{display:none}.warning{color:#a61b1b;font-weight:bold}.result{text-align:center}.score{font-size:44px;font-weight:bold;margin:10px}
+.review-item{background:#f7f8fb;border-radius:9px;padding:11px;margin:8px 0}.correct{border-left:5px solid #16803c}.wrong{border-left:5px solid #b42318}
+.small{color:#5d6878;font-size:13px}@media(max-width:600px){.grid{grid-template-columns:repeat(8,1fr)}.question{font-size:18px}}
+</style></head><body>
+<header><h1>Sindh Science Coaching Academy</h1><p>Six Months Foundation Course — Weekly Test | 50 MCQs</p></header>
+<div class="container">
+<section id="start" class="panel">
+<h2>Weekly Test — 50 MCQs</h2><p><b>Time:</b> 50 Minutes &nbsp; | &nbsp; <b>Total Marks:</b> 50</p>
+<p class="small">Enter your details. Your result will be recorded automatically after submission.</p>
+<div class="row"><div class="field"><label>Student Name</label><input id="studentName" type="text" placeholder="Enter full name"></div>
+<div class="field"><label>Roll No. / ID</label><input id="studentId" type="text" placeholder="Enter roll number"></div></div><br>
+<button class="primary" onclick="startTest()">Start Test</button></section>
+
+<section id="test" class="hidden">
+<div class="panel stats"><div class="stat">Time Left<b id="timer">50:00</b></div><div class="stat">Question<b id="progress">1 / 50</b></div><div class="stat">Tab Switches<b id="switches">0 / 3</b></div></div>
+<div id="warning" class="panel warning hidden"></div>
+<div class="panel"><div id="question"></div><div id="options"></div>
+<div class="nav"><button class="secondary" onclick="previousQuestion()">Previous</button><button class="secondary" onclick="nextQuestion()">Next</button></div></div>
+<div class="panel"><b>Question Navigator</b><div id="navigator" class="grid"></div><br>
+<button class="danger" onclick="confirmSubmit()">Submit Test</button></div>
+</section>
+
+<section id="result" class="hidden"><div class="panel result"><h2>Test Completed</h2><div id="score" class="score"></div>
+<p id="resultText"></p><p id="saveStatus" class="small"></p><button class="primary" onclick="location.reload()">Retry Test</button></div>
+<div class="panel"><h3>Answer Review</h3><div id="review"></div></div></section>
+</div>
+
+<script>
+const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzYn9EMbKyS8JTJgjzndgwvB1hoV4TceH366rIkiM1N6erCT9HFrhomIBfxxXdBzjxvbQ/exec";
+const TIME_LIMIT_MINUTES=50, MAX_TAB_SWITCHES=3;
+const TEST_TITLE="Six Months Foundation Course — Weekly Test";
+const questions=[{"q": "The smallest common multiple of two or more numbers is called their:", "options": ["HCF", "LCM", "Factor", "Multiple"], "answer": 1}, {"q": "The largest number that divides two or more numbers exactly is called their:", "options": ["LCM", "HCF", "Multiple", "Fraction"], "answer": 1}, {"q": "In BODMAS, \"D\" stands for:", "options": ["Decimal", "Division", "Digit", "Denominator"], "answer": 1}, {"q": "3/4 and 6/8 are called ______ fractions.", "options": ["Proper", "Improper", "Equivalent", "Mixed"], "answer": 2}, {"q": "A fraction in which the numerator is smaller than the denominator is called a ______ fraction.", "options": ["Improper", "Proper", "Mixed", "Equivalent"], "answer": 1}, {"q": "The sum of a positive integer and its negative is always:", "options": ["Positive", "Negative", "Zero", "One"], "answer": 2}, {"q": "Numbers such as 2, 4, 6, 8 are multiples of:", "options": ["3", "2", "5", "7"], "answer": 1}, {"q": "Besides 1, 2, 3, 4 and 6, the other factor of 12 is:", "options": ["8", "10", "12", "14"], "answer": 2}, {"q": "Integers include positive numbers, negative numbers and:", "options": ["Fractions", "Decimals", "Zero", "Percentages"], "answer": 2}, {"q": "According to BODMAS, operations inside brackets are solved:", "options": ["Last", "First", "Second", "Never"], "answer": 1}, {"q": "What is the LCM of 4 and 6?", "options": ["12", "24", "18", "10"], "answer": 0}, {"q": "What is the HCF of 8 and 12?", "options": ["2", "4", "6", "8"], "answer": 1}, {"q": "Solve using BODMAS: 10 + 2 × 3 = ?", "options": ["36", "16", "30", "12"], "answer": 1}, {"q": "What do you call a fraction whose numerator is greater than its denominator?", "options": ["Proper fraction", "Improper fraction", "Equivalent fraction", "Mixed fraction"], "answer": 1}, {"q": "What is the sum of -5 and 3?", "options": ["8", "-8", "-2", "2"], "answer": 2}, {"q": "Words like \"run, jump, eat\" that show action are called:", "options": ["Nouns", "Verbs", "Adjectives", "Adverbs"], "answer": 1}, {"q": "\"A\", \"an\" and \"the\" are called:", "options": ["Nouns", "Pronouns", "Articles", "Adjectives"], "answer": 2}, {"q": "\"An\" is used before words that begin with a ______ sound.", "options": ["Consonant", "Vowel", "Silent", "Hard"], "answer": 1}, {"q": "Words that have the same meaning are called:", "options": ["Antonyms", "Synonyms", "Homonyms", "Acronyms"], "answer": 1}, {"q": "Words that have opposite meanings are called:", "options": ["Synonyms", "Antonyms", "Homophones", "Prefixes"], "answer": 1}, {"q": "A word that describes a noun is called an:", "options": ["Adverb", "Adjective", "Article", "Pronoun"], "answer": 1}, {"q": "\"The\" is called the ______ article.", "options": ["Indefinite", "Definite", "Proper", "Common"], "answer": 1}, {"q": "What is a noun? Give one example.", "options": ["A word used in place of a noun; he", "A naming word; book", "An action word; run", "A describing word; beautiful"], "answer": 1}, {"q": "What is a pronoun? Give one example.", "options": ["A naming word; table", "A word used in place of a noun; he", "An action word; jump", "A describing word; happy"], "answer": 1}, {"q": "Give one synonym of the word \"happy\".", "options": ["Sad", "Angry", "Glad", "Tired"], "answer": 2}, {"q": "The branch of science that deals with living things is called:", "options": ["Physics", "Chemistry", "Biology", "Astronomy"], "answer": 2}, {"q": "The branch of science that deals with matter and energy is called:", "options": ["Biology", "Physics", "Chemistry", "Botany"], "answer": 1}, {"q": "The branch of science that deals with substances and their reactions is called:", "options": ["Physics", "Biology", "Chemistry", "Zoology"], "answer": 2}, {"q": "The sun is a ______ at the centre of the solar system.", "options": ["Planet", "Star", "Moon", "Comet"], "answer": 1}, {"q": "The planet nearest to the sun is:", "options": ["Venus", "Earth", "Mercury", "Mars"], "answer": 2}, {"q": "The SI unit of length is the:", "options": ["Kilogram", "Second", "Metre", "Kelvin"], "answer": 2}, {"q": "The SI unit of mass is the:", "options": ["Metre", "Kilogram", "Second", "Kelvin"], "answer": 1}, {"q": "A chain that shows how energy passes from one living thing to another is called a:", "options": ["Food web", "Food chain", "Life cycle", "Ecosystem"], "answer": 1}, {"q": "Name the branch of science that studies plants.", "options": ["Zoology", "Botany", "Ecology", "Genetics"], "answer": 1}, {"q": "Name the branch of science that studies stars and planets.", "options": ["Astrology", "Astronomy", "Cosmology", "Geology"], "answer": 1}, {"q": "How many planets are there in our solar system?", "options": ["7", "8", "9", "10"], "answer": 1}, {"q": "Which is the largest planet in the solar system?", "options": ["Saturn", "Earth", "Jupiter", "Neptune"], "answer": 2}, {"q": "What is the SI unit of time?", "options": ["Minute", "Hour", "Second", "Day"], "answer": 2}, {"q": "What is the SI unit of temperature?", "options": ["Celsius", "Fahrenheit", "Kelvin", "Degree"], "answer": 2}, {"q": "Name the two main groups into which living things are classified.", "options": ["Birds and Fish", "Plants and Animals", "Mammals and Reptiles", "Insects and Worms"], "answer": 1}, {"q": "Name any two characteristics of living things.", "options": ["Grow and breathe", "Fly and swim", "Talk and walk", "Read and write"], "answer": 0}, {"q": "Name one producer and one consumer in a food chain.", "options": ["Producer: Goat; Consumer: Grass", "Producer: Grass; Consumer: Goat", "Producer: Lion; Consumer: Grass", "Producer: Fish; Consumer: Water"], "answer": 1}, {"q": "Name any two things that all living things need to survive.", "options": ["Food and Water", "Television and Mobile", "Books and Pens", "Cars and Bicycles"], "answer": 0}, {"q": "What does \"M\" stand for in BODMAS?", "options": ["Measurement", "Multiplication", "Money", "Minute"], "answer": 1}, {"q": "Write all the factors of 10.", "options": ["1, 2, 5, 10", "1, 3, 5, 10", "2, 4, 6, 8", "1, 2, 3, 10"], "answer": 0}, {"q": "Write any three multiples of 5.", "options": ["5, 10, 15", "5, 15, 25", "10, 20, 30", "All of these"], "answer": 3}, {"q": "Give one antonym of the word \"big\".", "options": ["Large", "Huge", "Small", "Giant"], "answer": 2}, {"q": "When do we use \"an\" instead of \"a\"?", "options": ["Before consonant sounds", "Before vowel sounds", "Before silent letters", "Before numbers"], "answer": 1}, {"q": "Is \"the\" a definite or an indefinite article?", "options": ["Indefinite", "Definite", "Proper", "Common"], "answer": 1}, {"q": "Which of the following is a producer in a food chain?", "options": ["Goat", "Lion", "Grass", "Rabbit"], "answer": 2}];
+
+let current=0,answers=Array(questions.length).fill(null),timeLeft=TIME_LIMIT_MINUTES*60;
+let tabSwitches=0,timerInterval=null,started=false,submitting=false;
+
+function startTest(){
+ const n=document.getElementById("studentName").value.trim();
+ const id=document.getElementById("studentId").value.trim();
+ if(!n){alert("Please enter your name.");return}
+ if(!id){alert("Please enter your roll number / ID.");return}
+ started=true;document.getElementById("start").classList.add("hidden");document.getElementById("test").classList.remove("hidden");
+ render();timerInterval=setInterval(tick,1000);
+}
+function tick(){if(!started||submitting)return;timeLeft--;document.getElementById("timer").textContent=fmt(timeLeft);if(timeLeft<=0)submitTest("Time expired.");}
+function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+function render(){
+ const x=questions[current];
+ document.getElementById("question").innerHTML='<div class="question">Q'+(current+1)+'. '+esc(x.q)+'</div>';
+ document.getElementById("options").innerHTML=x.options.map((o,i)=>'<label class="option"><input type="radio" name="answer" value="'+i+'" '+(answers[current]===i?"checked":"")+' onchange="choose('+i+')"> '+esc(o)+'</label>').join("");
+ document.getElementById("progress").textContent=(current+1)+" / "+questions.length;renderNav();
+}
+function choose(i){answers[current]=i;renderNav();}
+function renderNav(){document.getElementById("navigator").innerHTML=questions.map((_,i)=>'<button class="qbtn '+(answers[i]!==null?"done":"")+'" onclick="go('+i+')">'+(i+1)+'</button>').join("");}
+function go(i){current=i;render()}function previousQuestion(){if(current>0){current--;render()}}function nextQuestion(){if(current<questions.length-1){current++;render()}}
+
+document.addEventListener("visibilitychange",()=>{
+ if(started&&!document.hidden&&!submitting){
+  tabSwitches++;document.getElementById("switches").textContent=tabSwitches+" / "+MAX_TAB_SWITCHES;
+  const w=document.getElementById("warning");w.classList.remove("hidden");w.textContent="Warning: Leaving the test tab/app was detected ("+tabSwitches+"/"+MAX_TAB_SWITCHES+").";
+  if(tabSwitches>=MAX_TAB_SWITCHES)submitTest("Maximum tab-switch limit reached.");
+ }
+});
+
+function confirmSubmit(){const u=answers.filter(a=>a===null).length;if(confirm("Submit test now? "+u+" question(s) are unanswered."))submitTest("Submitted by student.");}
+
+async function submitTest(reason){
+ if(submitting)return;submitting=true;started=false;clearInterval(timerInterval);
+ let score=0;questions.forEach((q,i)=>{if(answers[i]===q.answer)score++;});
+ const pct=Math.round(score/questions.length*100),name=document.getElementById("studentName").value.trim(),roll=document.getElementById("studentId").value.trim();
+ document.getElementById("test").classList.add("hidden");document.getElementById("result").classList.remove("hidden");
+ document.getElementById("score").textContent=score+" / "+questions.length;
+ document.getElementById("resultText").innerHTML="<b>"+pct+"%</b><br>"+esc(name)+" — "+esc(roll)+"<br>"+esc(reason)+"<br>Tab switches: "+tabSwitches;
+ document.getElementById("review").innerHTML=questions.map((q,i)=>{const ok=answers[i]===q.answer,chosen=answers[i]===null?"Not answered":q.options[answers[i]];return '<div class="review-item '+(ok?"correct":"wrong")+'"><b>Q'+(i+1)+'. '+esc(q.q)+'</b><br>Your answer: '+esc(chosen)+'<br>Correct answer: '+esc(q.options[q.answer])+'</div>'}).join("");
+ await saveResult(name,roll,score,pct,reason);
+}
+
+async function saveResult(name,roll,score,pct,reason){
+ const box=document.getElementById("saveStatus");
+ if(GOOGLE_SCRIPT_URL.includes("PASTE_")){box.textContent="Result displayed locally. Google Sheets is not connected yet.";return;}
+ box.textContent="Saving result to academy records...";
+ const data={testTitle:TEST_TITLE,studentName:name,rollNo:roll,score:score,total:questions.length,percentage:pct,tabSwitches:tabSwitches,submissionReason:reason,timeUsed:Math.max(0,TIME_LIMIT_MINUTES*60-timeLeft),timestamp:new Date().toISOString()};
+ try{
+  await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+  box.textContent="✓ Result submitted to academy records.";
+ }catch(e){box.textContent="Could not confirm the server response. Please contact the academy.";}
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));}
+</script></body></html>
